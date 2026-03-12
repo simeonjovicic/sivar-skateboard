@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIVAR | Craft Rebels</title>
+    <meta name="description" content="Skateboard Upcycling Art Design. Handcrafted jewelry and art objects made from recycled skateboards.">
+    
+    <!-- Google Fonts: Inter and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Lenis for smooth scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <!-- GSAP for scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Three.js for 3D objects -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SIVAR</div>
+        <div class="menu-btn">MENU</div>
+    </nav>
+
+    <main>
+        <!-- 1. Hero section -->
+        <section class="hero-section" id="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">CRAFT<br>REBELS</h1>
+                <p class="hero-subtitle">Skateboard Upcycling Art Design</p>
+                <div class="scroll-indicator">Scroll to explore</div>
+            </div>
+        </section>
+
+        <!-- 2. Story section -->
+        <section class="story-section" id="story">
+            <div class="container">
+                <div class="story-content">
+                    <h2 class="section-title">Reborn from the streets</h2>
+                    <p class="story-text">Every deck has a story. From concrete grind to refined design, SIVAR crafts luxury from the rebel spirit. We transform shattered skateboards into high-end objects of desire, preserving the intense color layers and the scuffed history of the ride.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Scroll animation section (Transforms Board to Ring) -->
+        <!-- Placed here for narrative flow -->
+        <section class="transform-section" id="transform">
+            <div class="container">
+                <h2 class="transform-text">From Deck to Ring</h2>
+            </div>
+        </section>
+
+        <!-- 3. Product showcase and 5. Shop section Combined mentally -->
+        <section class="showcase-section" id="showcase">
+            <div class="container">
+                <div class="showcase-header">
+                    <h2 class="section-title">Masterpieces</h2>
+                    <p>Worn by the wild. Crafted by artisans.</p>
+                </div>
+                
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img src="assets/ring.png" alt="Recycled Skateboard Ring" class="product-image">
+                            <div class="image-overlay">View Details</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">The Core Ring</h3>
+                            <p class="product-price">$240</p>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img src="assets/earrings.png" alt="Skateboard Wood Earrings" class="product-image">
+                            <div class="image-overlay">View Details</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Drop Drop Earrings</h3>
+                            <p class="product-price">$180</p>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img src="assets/art.png" alt="Skateboard Wall Art" class="product-image">
+                            <div class="image-overlay">View Details</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Shattered Canvas #04</h3>
+                            <p class="product-price">$1,200</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 6. Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">SIVAR</div>
+            <div class="footer-links">
+                <a href="#">Shop</a>
+                <a href="#">Story</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="#">IG</a>
+                <a href="#">TW</a>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 SIVAR Design. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 // Setup Lenis Smooth Scroll
 const lenis = new Lenis({
-    duration: 1.4,
+    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     direction: 'vertical',
     gestureDirection: 'vertical',
@@ -9,6 +9,7 @@ const lenis = new Lenis({
     smoothTouch: false,
     touchMultiplier: 2,
     infinite: false,
+    lerp: 0.1, // Added for extra smoothness control
 })
 
 function raf(time) {
@@ -135,13 +136,97 @@ ScrollTrigger.create({
     }
 });
 
-// Marquee speed based on scroll
+// Marquee speed based on scroll - throttled for performance
 const marqueeTrack = document.querySelector('.marquee-track');
 let marqueeSpeed = 1;
+let lastUpdate = 0;
 
 lenis.on('scroll', ({ velocity }) => {
-    marqueeSpeed = 1 + Math.abs(velocity) * 0.01;
-    marqueeTrack.style.animationDuration = `${30 / marqueeSpeed}s`;
+    const now = Date.now();
+    if (now - lastUpdate > 100) { // Throttle updates to every 100ms
+        marqueeSpeed = 1 + Math.abs(velocity) * 0.01;
+        marqueeTrack.style.animationDuration = `${30 / marqueeSpeed}s`;
+        lastUpdate = now;
+    }
+});
+
+// Subtle skew on scroll – reduced intensity
+const mainWrapper = document.querySelector('#main-wrapper');
+let proxy = { skew: 0 },
+    skewSetter = gsap.quickSetter(mainWrapper, "skewY", "deg"),
+    clamp = gsap.utils.clamp(-1.5, 1.5);   // was -10…10
+
+ScrollTrigger.create({
+    onUpdate: (self) => {
+        let skew = clamp(self.getVelocity() / -600);   // halved the sensitivity
+        if (Math.abs(skew) > Math.abs(proxy.skew)) {
+            proxy.skew = skew;
+            gsap.to(proxy, { skew: 0, duration: 0.8, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
+        }
+    }
+});
+
+// Horizontal Scroll for Showcase - Desktop only
+const horizontalSection = document.querySelector('#showcase');
+const horizontalTrack = document.querySelector('.horizontal-track');
+
+if (horizontalTrack) {
+    let scrollTween;
+    ScrollTrigger.matchMedia({
+        "(min-width: 769px)": function () {
+            // Pin the track more precisely
+            scrollTween = gsap.to(horizontalTrack, {
+                x: () => -(horizontalTrack.scrollWidth - window.innerWidth + window.innerWidth * 0.1),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".horizontal-showcase",
+                    pin: true,
+                    start: "top top",
+                    end: () => `+=${horizontalTrack.scrollWidth}`,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                    anticipatePin: 1
+                }
+            });
+
+            // Reveal triggers synced to horizontal movement
+            const revealMasks = document.querySelectorAll('.reveal-mask');
+            revealMasks.forEach(mask => {
+                ScrollTrigger.create({
+                    trigger: mask,
+                    containerAnimation: scrollTween,
+                    start: "left 90%", // Start reveal earlier
+                    onEnter: () => mask.classList.add('in-view'),
+                    onLeaveBack: () => mask.classList.remove('in-view'),
+                });
+            });
+        },
+        "(max-width: 768px)": function () {
+            const revealMasks = document.querySelectorAll('.reveal-mask');
+            revealMasks.forEach(mask => {
+                ScrollTrigger.create({
+                    trigger: mask,
+                    start: "top 85%",
+                    onEnter: () => mask.classList.add('in-view'),
+                });
+            });
+        }
+    });
+}
+
+// Dynamic image skew based on scroll
+// Dynamic image skew – reduced multiplier
+const productImages = document.querySelectorAll('.product-image-inner');
+lenis.on('scroll', ({ velocity }) => {
+    const skew = velocity * 0.015;   // was 0.05
+    productImages.forEach(img => {
+        gsap.to(img, {
+            skewY: skew,
+            duration: 0.5,
+            ease: "power2.out",
+            overwrite: true
+        });
+    });
 });
 
 // Preloader simulation

@@ -8,61 +8,103 @@
     <meta name="description"
         content="Skateboard Upcycling Art Design. Handcrafted jewelry and art objects made from recycled skateboards.">
 
-    <!-- Google Fonts: Inter and Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Lenis for smooth scrolling -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-
-    <!-- GSAP for scroll animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-    <!-- SplitType for text animations -->
-    <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
-
 </head>
 
 <body>
 
-    <!-- Grain overlay for artistic effect -->
-    <div class="grain-overlay"></div>
-
-    <!-- Magnetic lines decoration -->
-    <div class="magnetic-lines">
-        <div class="h-line"></div>
-        <div class="h-line"></div>
-        <div class="v-line"></div>
-        <div class="v-line"></div>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-text">
+                <span class="pl-letter">S</span><span class="pl-letter">I</span><span class="pl-letter">V</span><span
+                    class="pl-letter">A</span><span class="pl-letter">R</span>
+            </div>
+            <div class="preloader-sub">Craft Rebels</div>
+            <div class="preloader-bar">
+                <div class="preloader-fill"></div>
+            </div>
+        </div>
     </div>
 
-    <nav class="navbar">
-        <div class="logo" data-magnetic>
-            <span class="logo-letter">S</span>
-            <span class="logo-letter">I</span>
-            <span class="logo-letter">V</span>
-            <span class="logo-letter">A</span>
-            <span class="logo-letter">R</span>
+    <!-- Grain -->
+    <div class="grain-overlay"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <span class="logo-letter">S</span><span class="logo-letter">I</span><span class="logo-letter">V</span><span
+                class="logo-letter">A</span><span class="logo-letter">R</span>
         </div>
         <div class="nav-center">
-            <span class="nav-tagline">Est. 2024</span>
+            <span class="nav-tagline">Skateboard Upcycling Art Design</span>
         </div>
-        <div class="menu-btn" data-magnetic>
-            <span class="menu-line"></span>
-            <span class="menu-line"></span>
+        <div class="menu-btn">
+            <div class="menu-lines">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </div>
             <span class="menu-text">MENU</span>
         </div>
     </nav>
 
-    <!-- Progress indicator -->
-    <div class="scroll-progress">
-        <div class="progress-bar"></div>
+    <!-- Fullscreen Menu -->
+    <div class="menu-overlay" id="menu-overlay">
+        <div class="menu-overlay-bg"></div>
+        <div class="menu-overlay-content">
+            <div class="menu-nav">
+                <a href="#hero" class="menu-link" data-index="01">
+                    <span class="menu-link-number">01</span>
+                    <span class="menu-link-text">Home</span>
+                </a>
+                <a href="#story" class="menu-link" data-index="02">
+                    <span class="menu-link-number">02</span>
+                    <span class="menu-link-text">Story</span>
+                </a>
+                <a href="#process" class="menu-link" data-index="03">
+                    <span class="menu-link-number">03</span>
+                    <span class="menu-link-text">Process</span>
+                </a>
+                <a href="#showcase" class="menu-link" data-index="04">
+                    <span class="menu-link-number">04</span>
+                    <span class="menu-link-text">Collection</span>
+                </a>
+                <a href="#cta" class="menu-link" data-index="05">
+                    <span class="menu-link-number">05</span>
+                    <span class="menu-link-text">Shop</span>
+                </a>
+            </div>
+            <div class="menu-footer">
+                <div class="menu-footer-col">
+                    <span class="menu-footer-label">Social</span>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Pinterest</a>
+                </div>
+                <div class="menu-footer-col">
+                    <span class="menu-footer-label">Contact</span>
+                    <a href="#">hello@sivar.design</a>
+                    <a href="#">Vienna, Austria</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Progress -->
+    <div class="scroll-progress" id="scroll-progress">
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
         <div class="progress-sections">
             <span class="progress-dot active" data-section="hero"></span>
             <span class="progress-dot" data-section="story"></span>
@@ -73,338 +115,388 @@
 
     <div id="main-wrapper">
         <main>
-            <!-- 1. Hero section -->
+
+            <!-- ====== HERO ====== -->
             <section class="hero-section" id="hero">
+                <div class="hero-deco hero-deco-ring">
+                    <svg viewBox="0 0 200 200" fill="none">
+                        <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="0.5" opacity="0.15" />
+                        <circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="0.5" opacity="0.1" />
+                        <circle cx="100" cy="100" r="95" stroke="currentColor" stroke-width="0.3" stroke-dasharray="4 8"
+                            opacity="0.1" />
+                    </svg>
+                </div>
+                <div class="hero-deco hero-deco-cross">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <line x1="50" y1="0" x2="50" y2="100" stroke="currentColor" stroke-width="0.5" opacity="0.12" />
+                        <line x1="0" y1="50" x2="100" y2="50" stroke="currentColor" stroke-width="0.5" opacity="0.12" />
+                    </svg>
+                </div>
+
                 <div class="hero-content">
                     <div class="hero-eyebrow">
                         <span class="eyebrow-line"></span>
-                        <span class="eyebrow-text">Sivar Studio</span>
+                        <span class="eyebrow-text">Est. 2024 — Vienna</span>
                         <span class="eyebrow-line"></span>
                     </div>
-                    <h1 class="hero-title">
-                        <span class="title-line">CRAFT</span>
-                        <span class="title-line">REBELS</span>
+                    <h1 class="hero-title" id="hero-title">
+                        <span class="title-line"><span class="char-wrap"><span class="char">C</span></span><span
+                                class="char-wrap"><span class="char">R</span></span><span class="char-wrap"><span
+                                    class="char">A</span></span><span class="char-wrap"><span
+                                    class="char">F</span></span><span class="char-wrap"><span
+                                    class="char">T</span></span></span>
+                        <span class="title-line"><span class="char-wrap"><span class="char">R</span></span><span
+                                class="char-wrap"><span class="char">E</span></span><span class="char-wrap"><span
+                                    class="char">B</span></span><span class="char-wrap"><span
+                                    class="char">E</span></span><span class="char-wrap"><span
+                                    class="char">L</span></span><span class="char-wrap"><span
+                                    class="char">S</span></span></span>
                     </h1>
                     <p class="hero-subtitle">
-                        Skateboard Upcycling Art Design
+                        <span class="word-reveal">Skateboard</span>
+                        <span class="word-reveal">Upcycling</span>
+                        <span class="word-reveal">Art</span>
+                        <span class="word-reveal">Design</span>
                     </p>
                 </div>
-                <div class="scroll-indicator">
-                    <div class="scroll-line"></div>
-                    <span class="scroll-text">Scroll</span>
+
+                <div class="hero-bottom">
+                    <div class="hero-bottom-left"><span class="hero-label">Scroll to explore</span></div>
+                    <div class="scroll-indicator">
+                        <div class="scroll-line"></div>
+                    </div>
+                    <div class="hero-bottom-right"><span class="hero-label">&copy; 2026</span></div>
                 </div>
-                <div class="hero-corner hero-corner-tl"></div>
-                <div class="hero-corner hero-corner-tr"></div>
-                <div class="hero-corner hero-corner-bl"></div>
-                <div class="hero-corner hero-corner-br"></div>
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
             </section>
 
-            <!-- Horizontal marquee -->
+            <!-- ====== MARQUEE ====== -->
             <div class="marquee-section">
                 <div class="marquee-track">
                     <div class="marquee-content">
-                        <span>UPCYCLED</span>
-                        <span class="marquee-dot"></span>
-                        <span>HANDCRAFTED</span>
-                        <span class="marquee-dot"></span>
-                        <span>SUSTAINABLE</span>
-                        <span class="marquee-dot"></span>
-                        <span>REBEL</span>
-                        <span class="marquee-dot"></span>
-                        <span>ARTISAN</span>
-                        <span class="marquee-dot"></span>
-                        <span>UPCYCLED</span>
-                        <span class="marquee-dot"></span>
-                        <span>HANDCRAFTED</span>
-                        <span class="marquee-dot"></span>
-                        <span>SUSTAINABLE</span>
-                        <span class="marquee-dot"></span>
-                        <span>REBEL</span>
-                        <span class="marquee-dot"></span>
-                        <span>ARTISAN</span>
-                        <span class="marquee-dot"></span>
+                        <span>UPCYCLED</span><span class="marquee-dot"></span>
+                        <span>HANDCRAFTED</span><span class="marquee-dot"></span>
+                        <span>SUSTAINABLE</span><span class="marquee-dot"></span>
+                        <span>REBEL</span><span class="marquee-dot"></span>
+                        <span>ARTISAN</span><span class="marquee-dot"></span>
+                    </div>
+                    <div class="marquee-content" aria-hidden="true">
+                        <span>UPCYCLED</span><span class="marquee-dot"></span>
+                        <span>HANDCRAFTED</span><span class="marquee-dot"></span>
+                        <span>SUSTAINABLE</span><span class="marquee-dot"></span>
+                        <span>REBEL</span><span class="marquee-dot"></span>
+                        <span>ARTISAN</span><span class="marquee-dot"></span>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. Story section -->
+            <!-- ====== STORY ====== -->
             <section class="story-section" id="story">
+                <div class="story-bg-number">01</div>
                 <div class="container">
                     <div class="story-layout">
                         <div class="story-left">
-                            <div class="story-number">01</div>
-                            <h2 class="section-title split-text">
+                            <div class="story-label"><span class="label-line"></span><span class="label-text">Our
+                                    Origin</span></div>
+                            <h2 class="section-title story-title">
                                 <span class="line-wrap"><span class="line">Reborn</span></span>
                                 <span class="line-wrap"><span class="line">from the</span></span>
-                                <span class="line-wrap"><span class="line">streets</span></span>
+                                <span class="line-wrap"><span class="line"><em>streets</em></span></span>
                             </h2>
                         </div>
                         <div class="story-right">
-                            <p class="story-text reveal-text">Every deck has a story. From concrete grind to refined
-                                design,
-                                SIVAR crafts luxury from the rebel spirit.</p>
-                            <p class="story-text reveal-text delay-1">We transform shattered skateboards into high-end
-                                objects of desire, preserving the intense color layers and the scuffed history of the
-                                ride.
-                            </p>
+                            <div class="story-text-block">
+                                <p class="story-text reveal-up">Every deck has a story. From concrete grind to refined
+                                    design, SIVAR crafts luxury from the rebel spirit.</p>
+                                <p class="story-text reveal-up" style="--delay: 0.15s">We transform shattered
+                                    skateboards into high-end objects of desire, preserving the intense color layers and
+                                    the scuffed history of the ride.</p>
+                            </div>
                             <div class="story-stats">
-                                <div class="stat reveal-stat">
+                                <div class="stat reveal-up" style="--delay: 0.2s">
                                     <span class="stat-number" data-value="500">0</span>
-                                    <span class="stat-label">Decks Transformed</span>
+                                    <span class="stat-divider"></span>
+                                    <span class="stat-label">Decks<br>Transformed</span>
                                 </div>
-                                <div class="stat reveal-stat">
+                                <div class="stat reveal-up" style="--delay: 0.3s">
                                     <span class="stat-number" data-value="12">0</span>
-                                    <span class="stat-label">Countries</span>
+                                    <span class="stat-divider"></span>
+                                    <span class="stat-label">Countries<br>Worldwide</span>
                                 </div>
-                                <div class="stat reveal-stat">
+                                <div class="stat reveal-up" style="--delay: 0.4s">
                                     <span class="stat-number" data-value="100">0</span>
-                                    <span class="stat-label">% Handmade</span>
+                                    <span class="stat-divider"></span>
+                                    <span class="stat-label">Percent<br>Handmade</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="story-bg-text">REBEL</div>
             </section>
 
-            <!-- 4. Scroll animation section (Transforms Board to Ring) -->
+            <!-- ====== VISUAL DIVIDER ====== -->
+            <section class="visual-divider">
+                <div class="divider-line"></div>
+                <div class="divider-text">
+                    <span class="divider-word">DESTROY</span>
+                    <svg class="divider-arrow" viewBox="0 0 120 24" fill="none">
+                        <line x1="0" y1="12" x2="110" y2="12" stroke="currentColor" stroke-width="1" />
+                        <polyline points="100,4 112,12 100,20" stroke="currentColor" stroke-width="1" fill="none" />
+                    </svg>
+                    <span class="divider-word"><em>Create</em></span>
+                </div>
+                <div class="divider-line"></div>
+            </section>
+
+            <!-- ====== TRANSFORM ====== -->
             <section class="transform-section" id="transform">
                 <div class="container">
                     <div class="transform-content">
-                        <div class="transform-number">02</div>
-                        <h2 class="transform-title">
-                            <span class="line-wrap"><span class="line">From</span></span>
-                            <span class="line-wrap"><span class="line">Deck</span></span>
-                        </h2>
-                        <div class="transform-arrow">
-                            <svg viewBox="0 0 100 100">
-                                <path class="arrow-path" d="M10,50 L90,50 M70,30 L90,50 L70,70" fill="none"
-                                    stroke="currentColor" stroke-width="2" />
-                            </svg>
+                        <div class="transform-label"><span class="label-line"></span><span class="label-text">The
+                                Metamorphosis</span></div>
+                        <div class="transform-titles">
+                            <h2 class="transform-title transform-title-from">
+                                <span class="line-wrap"><span class="line">From</span></span>
+                                <span class="line-wrap"><span class="line">Deck</span></span>
+                            </h2>
+                            <div class="transform-morph">
+                                <svg class="morph-svg" viewBox="0 0 300 120" fill="none">
+                                    <path class="morph-path"
+                                        d="M20,60 C20,30 60,10 150,10 C240,10 280,30 280,60 C280,90 240,110 150,110 C60,110 20,90 20,60 Z"
+                                        stroke="currentColor" stroke-width="1" fill="none" />
+                                </svg>
+                            </div>
+                            <h2 class="transform-title transform-title-to">
+                                <span class="line-wrap"><span class="line">To</span></span>
+                                <span class="line-wrap"><span class="line"><em>Ring</em></span></span>
+                            </h2>
                         </div>
-                        <h2 class="transform-title">
-                            <span class="line-wrap"><span class="line">To</span></span>
-                            <span class="line-wrap"><span class="line">Ring</span></span>
-                        </h2>
+                    </div>
                 </div>
-                <div class="transform-visual">
-                    <div class="transform-slice"></div>
-                    <div class="transform-slice"></div>
-                    <div class="transform-slice"></div>
+                <div class="transform-layers">
+                    <div class="layer-strip" style="--i:0"></div>
+                    <div class="layer-strip" style="--i:1"></div>
+                    <div class="layer-strip" style="--i:2"></div>
+                    <div class="layer-strip" style="--i:3"></div>
+                    <div class="layer-strip" style="--i:4"></div>
                 </div>
-                <div class="transform-particles" id="particles"></div>
             </section>
 
-            <!-- Process section -->
+            <!-- ====== PROCESS ====== -->
             <section class="process-section" id="process">
                 <div class="container">
                     <div class="process-header">
-                        <div class="process-number">03</div>
-                        <h2 class="section-title split-text">The Craft</h2>
+                        <div class="process-label"><span class="label-line"></span><span class="label-text">The
+                                Craft</span></div>
+                        <h2 class="section-title process-title">
+                            <span class="line-wrap"><span class="line">Four steps.</span></span>
+                            <span class="line-wrap"><span class="line"><em>Infinite care.</em></span></span>
+                        </h2>
                     </div>
-                    <div class="process-steps">
-                        <div class="process-step" data-step="1">
-                            <div class="step-line"></div>
-                            <div class="step-content">
-                                <span class="step-number">01</span>
-                                <h3 class="step-title">Collect</h3>
-                                <p class="step-desc">We gather broken decks from skate parks and riders worldwide</p>
-                            </div>
+                    <div class="process-timeline">
+                        <div class="timeline-line">
+                            <div class="timeline-fill"></div>
                         </div>
-                        <div class="process-step" data-step="2">
-                            <div class="step-line"></div>
-                            <div class="step-content">
-                                <span class="step-number">02</span>
-                                <h3 class="step-title">Deconstruct</h3>
-                                <p class="step-desc">Each layer is carefully separated and catalogued by color</p>
+                        <div class="process-steps">
+                            <div class="process-step" data-step="01">
+                                <div class="step-marker">
+                                    <div class="step-dot"></div><span class="step-number">01</span>
+                                </div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Collect</h3>
+                                    <p class="step-desc">Broken decks gathered from skate parks and riders worldwide —
+                                        each carrying years of story.</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="process-step" data-step="3">
-                            <div class="step-line"></div>
-                            <div class="step-content">
-                                <span class="step-number">03</span>
-                                <h3 class="step-title">Reshape</h3>
-                                <p class="step-desc">Precision machinery and hand tools shape the new form</p>
+                            <div class="process-step" data-step="02">
+                                <div class="step-marker">
+                                    <div class="step-dot"></div><span class="step-number">02</span>
+                                </div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Deconstruct</h3>
+                                    <p class="step-desc">Each maple layer carefully separated and catalogued by color,
+                                        grain, and history.</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="process-step" data-step="4">
-                            <div class="step-line"></div>
-                            <div class="step-content">
-                                <span class="step-number">04</span>
-                                <h3 class="step-title">Polish</h3>
-                                <p class="step-desc">Final finishing reveals the hidden beauty within</p>
+                            <div class="process-step" data-step="03">
+                                <div class="step-marker">
+                                    <div class="step-dot"></div><span class="step-number">03</span>
+                                </div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Reshape</h3>
+                                    <p class="step-desc">Precision machinery and hand tools sculpt new forms from
+                                        reclaimed wood.</p>
+                                </div>
+                            </div>
+                            <div class="process-step" data-step="04">
+                                <div class="step-marker">
+                                    <div class="step-dot"></div><span class="step-number">04</span>
+                                </div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Polish</h3>
+                                    <p class="step-desc">Final finishing reveals hidden beauty — the vivid layers of a
+                                        life once lived on concrete.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 3. Product showcase - Horizontal Scroll -->
+            <!-- ====== SHOWCASE ====== -->
             <section class="showcase-section" id="showcase">
                 <div class="container">
                     <div class="showcase-header">
-                        <div class="showcase-number">04</div>
-                        <h2 class="section-title split-text">Masterpieces</h2>
-                        <p class="showcase-subtitle reveal-text">Worn by the wild. Crafted by artisans.</p>
+                        <div class="showcase-label"><span class="label-line"></span><span class="label-text">The
+                                Collection</span></div>
+                        <h2 class="section-title showcase-title">
+                            <span class="line-wrap"><span class="line">Master</span></span>
+                            <span class="line-wrap"><span class="line"><em>pieces</em></span></span>
+                        </h2>
+                        <p class="showcase-subtitle">Worn by the wild. Crafted by artisans.</p>
                     </div>
                 </div>
-
-                <div class="horizontal-showcase">
+                <div class="horizontal-showcase" data-lenis-prevent>
                     <div class="horizontal-track">
                         <div class="product-card" data-product="1">
                             <div class="product-image-wrapper reveal-mask">
-                                <div class="product-image-inner">
-                                    <img src="https://placehold.co/600x800?text=CORE+RING" alt="Recycled Skateboard Ring" class="product-image">
-                                </div>
-                                <div class="product-overlay">
-                                    <span class="overlay-text">Explore</span>
-                                    <svg class="overlay-arrow" viewBox="0 0 24 24">
+                                <div class="product-image-inner"><img
+                                        src="https://placehold.co/600x800/e8e6e1/333?text=CORE+RING" alt="The Core Ring"
+                                        class="product-image"></div>
+                                <div class="product-overlay"><span class="overlay-text">Explore</span><svg
+                                        class="overlay-arrow" viewBox="0 0 24 24">
                                         <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2"
                                             fill="none" />
-                                    </svg>
-                                </div>
+                                    </svg></div>
                                 <div class="product-tag">Best Seller</div>
                             </div>
                             <div class="product-info">
-                                <div class="product-meta">
-                                    <span class="product-category">Ring</span>
-                                    <span class="product-id">#001</span>
-                                </div>
+                                <div class="product-meta"><span class="product-category">Ring</span><span
+                                        class="product-id">#001</span></div>
                                 <h3 class="product-name">The Core Ring</h3>
                                 <p class="product-price">$240</p>
                             </div>
                         </div>
-
                         <div class="product-card" data-product="2">
                             <div class="product-image-wrapper reveal-mask">
-                                <div class="product-image-inner">
-                                    <img src="https://placehold.co/600x800?text=DROP+DROP" alt="Skateboard Wood Earrings" class="product-image">
-                                </div>
-                                <div class="product-overlay">
-                                    <span class="overlay-text">Explore</span>
-                                    <svg class="overlay-arrow" viewBox="0 0 24 24">
+                                <div class="product-image-inner"><img
+                                        src="https://placehold.co/600x800/e8e6e1/333?text=DROP+DROP"
+                                        alt="Drop Drop Earrings" class="product-image"></div>
+                                <div class="product-overlay"><span class="overlay-text">Explore</span><svg
+                                        class="overlay-arrow" viewBox="0 0 24 24">
                                         <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2"
                                             fill="none" />
-                                    </svg>
-                                </div>
+                                    </svg></div>
                                 <div class="product-tag">New</div>
                             </div>
                             <div class="product-info">
-                                <div class="product-meta">
-                                    <span class="product-category">Earrings</span>
-                                    <span class="product-id">#002</span>
-                                </div>
+                                <div class="product-meta"><span class="product-category">Earrings</span><span
+                                        class="product-id">#002</span></div>
                                 <h3 class="product-name">Drop Drop Earrings</h3>
                                 <p class="product-price">$180</p>
                             </div>
                         </div>
-
                         <div class="product-card" data-product="3">
                             <div class="product-image-wrapper reveal-mask">
-                                <div class="product-image-inner">
-                                    <img src="https://placehold.co/600x800?text=WALL+ART" alt="Skateboard Wall Art" class="product-image">
-                                </div>
-                                <div class="product-overlay">
-                                    <span class="overlay-text">Explore</span>
-                                    <svg class="overlay-arrow" viewBox="0 0 24 24">
+                                <div class="product-image-inner"><img
+                                        src="https://placehold.co/600x800/e8e6e1/333?text=WALL+ART"
+                                        alt="Shattered Canvas" class="product-image"></div>
+                                <div class="product-overlay"><span class="overlay-text">Explore</span><svg
+                                        class="overlay-arrow" viewBox="0 0 24 24">
                                         <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2"
                                             fill="none" />
-                                    </svg>
-                                </div>
+                                    </svg></div>
                                 <div class="product-tag">Limited</div>
                             </div>
                             <div class="product-info">
-                                <div class="product-meta">
-                                    <span class="product-category">Art</span>
-                                    <span class="product-id">#004</span>
-                                </div>
+                                <div class="product-meta"><span class="product-category">Art</span><span
+                                        class="product-id">#004</span></div>
                                 <h3 class="product-name">Shattered Canvas #04</h3>
                                 <p class="product-price">$1,200</p>
                             </div>
                         </div>
-
                         <div class="product-card" data-product="4">
                             <div class="product-image-wrapper reveal-mask">
-                                <div class="product-image-inner">
-                                    <img src="https://placehold.co/600x800?text=REBEL+BAND" alt="Recycled Skateboard Ring" class="product-image">
-                                </div>
-                                <div class="product-overlay">
-                                    <span class="overlay-text">Explore</span>
-                                    <svg class="overlay-arrow" viewBox="0 0 24 24">
+                                <div class="product-image-inner"><img
+                                        src="https://placehold.co/600x800/e8e6e1/333?text=REBEL+BAND"
+                                        alt="The Rebel Band" class="product-image"></div>
+                                <div class="product-overlay"><span class="overlay-text">Explore</span><svg
+                                        class="overlay-arrow" viewBox="0 0 24 24">
                                         <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2"
                                             fill="none" />
-                                    </svg>
-                                </div>
+                                    </svg></div>
                                 <div class="product-tag">Exclusive</div>
                             </div>
                             <div class="product-info">
-                                <div class="product-meta">
-                                    <span class="product-category">Ring</span>
-                                    <span class="product-id">#005</span>
-                                </div>
+                                <div class="product-meta"><span class="product-category">Ring</span><span
+                                        class="product-id">#005</span></div>
                                 <h3 class="product-name">The Rebel Band</h3>
                                 <p class="product-price">$310</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="container">
+                    <div class="carousel-hint">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M8 12H16M16 12L13 9M16 12L13 15" stroke="currentColor" stroke-width="1.5" />
+                        </svg>
+                        <span>Drag to explore</span>
+                    </div>
+                </div>
             </section>
 
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title split-text">
-                        <span class="line-wrap"><span class="line">Ready to</span></span>
-                        <span class="line-wrap"><span class="line">rebel?</span></span>
-                    </h2>
-                    <a href="#" class="cta-btn">
-                        <span class="btn-text">Shop Collection</span>
-                        <span class="btn-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2"
-                                    fill="none" />
-                            </svg>
-                        </span>
-                    </a>
+            <!-- ====== CTA ====== -->
+            <section class="cta-section" id="cta">
+                <div class="container">
+                    <div class="cta-content">
+                        <h2 class="cta-title">
+                            <span class="cta-line"><span class="cta-word">Ready</span> <span
+                                    class="cta-word">to</span></span>
+                            <span class="cta-line"><span class="cta-word cta-word-accent"><em>rebel?</em></span></span>
+                        </h2>
+                        <a href="#" class="cta-btn">
+                            <span class="btn-text">Shop Collection</span>
+                            <span class="btn-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2"
+                                        fill="none" />
+                                </svg></span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
 
-    <!-- 6. Footer -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-left">
-                <div class="footer-logo">SIVAR</div>
-                <p class="footer-tagline">Craft Rebels since 2024</p>
-            </div>
-            <div class="footer-nav">
-                <div class="footer-col">
-                    <h4 class="footer-heading">Navigate</h4>
-                    <a href="#">Shop</a>
-                    <a href="#">Story</a>
-                    <a href="#">Process</a>
-                    <a href="#">Contact</a>
+        </main>
+
+        <!-- ====== FOOTER ====== -->
+        <footer class="footer">
+            <div class="container footer-content">
+                <div class="footer-left">
+                    <div class="footer-logo">SIVAR</div>
+                    <p class="footer-tagline">Craft Rebels since 2024</p>
                 </div>
-                <div class="footer-col">
-                    <h4 class="footer-heading">Connect</h4>
-                    <a href="#">Instagram</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">Pinterest</a>
+                <div class="footer-nav">
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Navigate</h4><a href="#">Shop</a><a href="#">Story</a><a
+                            href="#">Process</a><a href="#">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Connect</h4><a href="#">Instagram</a><a href="#">Twitter</a><a
+                            href="#">Pinterest</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="container footer-bottom">
-            <p>&copy; 2026 SIVAR Design. All rights reserved.</p>
-            <div class="footer-bottom-links">
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
+            <div class="container footer-bottom">
+                <p>&copy; 2026 SIVAR Design. All rights reserved.</p>
+                <div class="footer-bottom-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
             </div>
         </footer>
     </div>
 
-    <script type="module" src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

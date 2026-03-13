@@ -1,236 +1,468 @@
-// Setup Lenis Smooth Scroll
+// ============================================
+// SIVAR — Craft Rebels
+// Main Animation Controller
+// ============================================
+
+// --- Lenis Smooth Scroll ---
 const lenis = new Lenis({
-    duration: 1.2,
+    duration: 1.4,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
     smooth: true,
-    mouseMultiplier: 1,
     smoothTouch: false,
     touchMultiplier: 2,
-    infinite: false,
-    lerp: 0.1, // Added for extra smoothness control
-})
+});
 
 function raf(time) {
-    lenis.raf(time)
-    requestAnimationFrame(raf)
+    lenis.raf(time);
+    requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf)
+requestAnimationFrame(raf);
 
-// gsap ScrollTrigger configuration with lenis
 gsap.registerPlugin(ScrollTrigger);
+lenis.on('scroll', ScrollTrigger.update);
 
-// Update scroll progress
-lenis.on('scroll', ({ progress }) => {
-    document.documentElement.style.setProperty('--scroll-progress', `${progress * 100}%`);
+// Temporarily stop Lenis during preloader
+lenis.stop();
+
+// ============================================
+// PRELOADER
+// ============================================
+const preloader = document.getElementById('preloader');
+const plLetters = document.querySelectorAll('.pl-letter');
+const plSub = document.querySelector('.preloader-sub');
+const plFill = document.querySelector('.preloader-fill');
+
+// Animate preloader letters in
+const plTl = gsap.timeline({ delay: 0.3 });
+
+plTl.to(plLetters, {
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    stagger: 0.08,
+    ease: 'power3.out'
+})
+    .to(plSub, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+    .to(plFill, { width: '100%', duration: 1.2, ease: 'power2.inOut' }, '-=0.3');
+
+window.addEventListener('load', () => {
+    // Ensure minimum preloader time
+    gsap.delayedCall(Math.max(0, 2.2), () => {
+        preloader.classList.add('done');
+        document.body.classList.add('loaded');
+        lenis.start();
+        revealHero();
+    });
 });
 
-// ----------------------------------------------------
-// GSAP SCROLL ANIMATIONS
-// ----------------------------------------------------
+// ============================================
+// HERO REVEAL
+// ============================================
+function revealHero() {
+    const chars = document.querySelectorAll('.hero-title .char');
+    const eyebrow = document.querySelector('.hero-eyebrow');
+    const words = document.querySelectorAll('.word-reveal');
+    const heroBottom = document.querySelector('.hero-bottom');
 
-// Scroll progress dots update
+    const tl = gsap.timeline({ delay: 0.4 });
+
+    // Stagger chars from center out
+    const charArray = Array.from(chars);
+    const line1 = charArray.slice(0, 5);  // CRAFT
+    const line2 = charArray.slice(5);     // REBELS
+
+    function centerStagger(arr) {
+        const mid = (arr.length - 1) / 2;
+        return arr.map((el, i) => ({ el, dist: Math.abs(i - mid) }))
+            .sort((a, b) => a.dist - b.dist)
+            .map(o => o.el);
+    }
+
+    tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+        .to(centerStagger(line1), {
+            y: 0, duration: 1, stagger: 0.06, ease: 'power3.out'
+        }, '-=0.4')
+        .to(centerStagger(line2), {
+            y: 0, duration: 1, stagger: 0.06, ease: 'power3.out'
+        }, '-=0.7')
+        .to(words, {
+            opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out'
+        }, '-=0.4')
+        .to(heroBottom, {
+            opacity: 1, duration: 0.6, ease: 'power2.out'
+        }, '-=0.2');
+}
+
+// ============================================
+// SCROLL PROGRESS
+// ============================================
+const progressFill = document.querySelector('.progress-fill');
 const progressDots = document.querySelectorAll('.progress-dot');
-const sections = ['hero', 'story', 'transform', 'showcase'];
+const sectionIds = ['hero', 'story', 'transform', 'showcase'];
 
-sections.forEach((sectionId, index) => {
+lenis.on('scroll', ({ progress }) => {
+    if (progressFill) {
+        progressFill.style.height = `${progress * 100}%`;
+    }
+});
+
+sectionIds.forEach((id, i) => {
     ScrollTrigger.create({
-        trigger: `#${sectionId}`,
+        trigger: `#${id}`,
         start: 'top center',
         end: 'bottom center',
-        onEnter: () => updateProgressDots(index),
-        onEnterBack: () => updateProgressDots(index)
+        onEnter: () => setActiveDot(i),
+        onEnterBack: () => setActiveDot(i),
     });
 });
 
-function updateProgressDots(activeIndex) {
+function setActiveDot(index) {
     progressDots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === activeIndex);
+        dot.classList.toggle('active', i === index);
     });
 }
 
-// Hero parallax
+// ============================================
+// HERO PARALLAX
+// ============================================
 gsap.to('.hero-content', {
     scrollTrigger: {
         trigger: '.hero-section',
         start: 'top top',
         end: 'bottom top',
-        scrub: 1
+        scrub: 1,
     },
-    y: 200,
-    opacity: 0.3
+    y: 180,
+    opacity: 0,
+    ease: 'none'
 });
 
-// Story section reveal
+gsap.to('.hero-deco-ring', {
+    scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+    },
+    y: -100,
+    rotation: 90,
+    scale: 0.7,
+    ease: 'none'
+});
+
+gsap.to('.hero-deco-cross', {
+    scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+    },
+    y: 150,
+    rotation: -180,
+    ease: 'none'
+});
+
+// Navbar hide/show on scroll
+let lastScroll = 0;
+const navbar = document.getElementById('navbar');
+
+lenis.on('scroll', ({ scroll }) => {
+    if (scroll > 200 && scroll > lastScroll) {
+        navbar.style.transform = 'translateY(-100%)';
+        navbar.style.transition = 'transform 0.4s ease';
+    } else {
+        navbar.style.transform = 'translateY(0)';
+        navbar.style.transition = 'transform 0.4s ease';
+    }
+    lastScroll = scroll;
+});
+
+// ============================================
+// STORY SECTION
+// ============================================
 const storySection = document.querySelector('.story-section');
 const storyTitle = storySection.querySelector('.section-title');
-const storyTexts = storySection.querySelectorAll('.story-text');
-const storyStats = storySection.querySelectorAll('.stat');
 
 ScrollTrigger.create({
     trigger: storySection,
-    start: 'top 70%',
+    start: 'top 65%',
     onEnter: () => {
         storyTitle.classList.add('in-view');
-        storyTexts.forEach(text => text.classList.add('in-view'));
-        storyStats.forEach(stat => stat.classList.add('in-view'));
+
+        // Reveal ups
+        storySection.querySelectorAll('.reveal-up').forEach(el => el.classList.add('in-view'));
 
         // Animate stat numbers
-        storyStats.forEach(stat => {
-            const numberEl = stat.querySelector('.stat-number');
-            const targetValue = parseInt(numberEl.dataset.value);
+        storySection.querySelectorAll('.stat-number').forEach(numEl => {
+            const target = parseInt(numEl.dataset.value);
             gsap.to({ val: 0 }, {
-                val: targetValue,
-                duration: 2,
+                val: target,
+                duration: 2.5,
                 ease: 'power2.out',
-                onUpdate: function () {
-                    numberEl.textContent = Math.round(this.targets()[0].val) + (numberEl.dataset.value === '100' ? '%' : '+');
+                onUpdate() {
+                    const v = Math.round(this.targets()[0].val);
+                    numEl.textContent = v + (target === 100 ? '%' : '+');
                 }
             });
         });
     },
-    once: true
+    once: true,
 });
 
-// Transform section - title reveal only
+// Parallax on story bg number
+gsap.to('.story-bg-number', {
+    scrollTrigger: {
+        trigger: storySection,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+    },
+    y: -200,
+    ease: 'none'
+});
+
+// ============================================
+// VISUAL DIVIDER ANIMATION
+// ============================================
+const divider = document.querySelector('.visual-divider');
+if (divider) {
+    gsap.from(divider.querySelectorAll('.divider-word'), {
+        scrollTrigger: {
+            trigger: divider,
+            start: 'top 80%',
+            once: true,
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out'
+    });
+
+    gsap.from('.divider-arrow', {
+        scrollTrigger: {
+            trigger: divider,
+            start: 'top 80%',
+            once: true,
+        },
+        scaleX: 0,
+        duration: 0.8,
+        delay: 0.3,
+        ease: 'power3.out',
+        transformOrigin: 'left center'
+    });
+}
+
+// ============================================
+// TRANSFORM SECTION
+// ============================================
 const transformSection = document.querySelector('.transform-section');
 
 ScrollTrigger.create({
     trigger: transformSection,
-    start: 'top center',
-    onEnter: () => transformSection.classList.add('in-view')
+    start: 'top 55%',
+    onEnter: () => {
+        transformSection.classList.add('in-view');
+    },
 });
 
-// Process section steps reveal
+// Morph path draw on scroll
+gsap.to('.morph-path', {
+    scrollTrigger: {
+        trigger: transformSection,
+        start: 'top 60%',
+        end: 'center center',
+        scrub: 1,
+    },
+    strokeDashoffset: 0,
+    ease: 'none'
+});
+
+// ============================================
+// PROCESS SECTION
+// ============================================
 const processSteps = document.querySelectorAll('.process-step');
-processSteps.forEach((step, index) => {
+const timelineFill = document.querySelector('.timeline-fill');
+
+processSteps.forEach((step, i) => {
     ScrollTrigger.create({
         trigger: step,
-        start: 'top 80%',
-        onEnter: () => step.classList.add('in-view'),
-        once: true
-    });
-});
-
-// Product cards reveal
-const productCards = document.querySelectorAll('.product-card');
-productCards.forEach((card, index) => {
-    ScrollTrigger.create({
-        trigger: card,
-        start: 'top 85%',
-        onEnter: () => card.classList.add('in-view'),
-        once: true
-    });
-});
-
-// CTA section animation
-const ctaSection = document.querySelector('.cta-section');
-const ctaTitle = ctaSection.querySelector('.cta-title');
-
-ScrollTrigger.create({
-    trigger: ctaSection,
-    start: 'top 70%',
-    onEnter: () => {
-        ctaTitle.classList.add('in-view');
-    }
-});
-
-// Marquee speed based on scroll - throttled for performance
-const marqueeTrack = document.querySelector('.marquee-track');
-let marqueeSpeed = 1;
-let lastUpdate = 0;
-
-lenis.on('scroll', ({ velocity }) => {
-    const now = Date.now();
-    if (now - lastUpdate > 100) { // Throttle updates to every 100ms
-        marqueeSpeed = 1 + Math.abs(velocity) * 0.01;
-        marqueeTrack.style.animationDuration = `${30 / marqueeSpeed}s`;
-        lastUpdate = now;
-    }
-});
-
-// Subtle skew on scroll – reduced intensity
-const mainWrapper = document.querySelector('#main-wrapper');
-let proxy = { skew: 0 },
-    skewSetter = gsap.quickSetter(mainWrapper, "skewY", "deg"),
-    clamp = gsap.utils.clamp(-1.5, 1.5);   // was -10…10
-
-ScrollTrigger.create({
-    onUpdate: (self) => {
-        let skew = clamp(self.getVelocity() / -600);   // halved the sensitivity
-        if (Math.abs(skew) > Math.abs(proxy.skew)) {
-            proxy.skew = skew;
-            gsap.to(proxy, { skew: 0, duration: 0.8, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
-        }
-    }
-});
-
-// Horizontal Scroll for Showcase - Desktop only
-const horizontalSection = document.querySelector('#showcase');
-const horizontalTrack = document.querySelector('.horizontal-track');
-
-if (horizontalTrack) {
-    let scrollTween;
-    ScrollTrigger.matchMedia({
-        "(min-width: 769px)": function () {
-            // Pin the track more precisely
-            scrollTween = gsap.to(horizontalTrack, {
-                x: () => -(horizontalTrack.scrollWidth - window.innerWidth + window.innerWidth * 0.1),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".horizontal-showcase",
-                    pin: true,
-                    start: "top top",
-                    end: () => `+=${horizontalTrack.scrollWidth}`,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                    anticipatePin: 1
-                }
-            });
-
-            // Reveal triggers synced to horizontal movement
-            const revealMasks = document.querySelectorAll('.reveal-mask');
-            revealMasks.forEach(mask => {
-                ScrollTrigger.create({
-                    trigger: mask,
-                    containerAnimation: scrollTween,
-                    start: "left 90%", // Start reveal earlier
-                    onEnter: () => mask.classList.add('in-view'),
-                    onLeaveBack: () => mask.classList.remove('in-view'),
-                });
-            });
+        start: 'top 75%',
+        onEnter: () => {
+            step.classList.add('in-view');
+            // Update timeline fill
+            const progress = ((i + 1) / processSteps.length) * 100;
+            if (timelineFill) {
+                gsap.to(timelineFill, { height: `${progress}%`, duration: 0.6, ease: 'power2.out' });
+            }
         },
-        "(max-width: 768px)": function () {
-            const revealMasks = document.querySelectorAll('.reveal-mask');
-            revealMasks.forEach(mask => {
-                ScrollTrigger.create({
-                    trigger: mask,
-                    start: "top 85%",
-                    onEnter: () => mask.classList.add('in-view'),
-                });
-            });
-        }
+        once: true,
+    });
+});
+
+// Process title reveal
+const processTitle = document.querySelector('.process-title');
+if (processTitle) {
+    ScrollTrigger.create({
+        trigger: '.process-header',
+        start: 'top 70%',
+        onEnter: () => processTitle.classList.add('in-view'),
+        once: true,
     });
 }
 
-// Dynamic image skew based on scroll
-// Dynamic image skew – reduced multiplier
-const productImages = document.querySelectorAll('.product-image-inner');
+// ============================================
+// SHOWCASE — HORIZONTAL CAROUSEL
+// ============================================
+const showcaseContainer = document.querySelector('.horizontal-showcase');
+const showcaseTitle = document.querySelector('.showcase-title');
+
+// Title reveal
+if (showcaseTitle) {
+    ScrollTrigger.create({
+        trigger: '.showcase-header',
+        start: 'top 70%',
+        onEnter: () => showcaseTitle.classList.add('in-view'),
+        once: true,
+    });
+}
+
+// Reveal cards as they enter viewport (via IntersectionObserver on the horizontal scroll)
+const revealMasks = document.querySelectorAll('.reveal-mask');
+const maskObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+        }
+    });
+}, { threshold: 0.15 });
+
+revealMasks.forEach(mask => maskObserver.observe(mask));
+
+// Drag-to-scroll on desktop
+if (showcaseContainer) {
+    let isDown = false, startX, scrollLeft;
+
+    showcaseContainer.addEventListener('mousedown', (e) => {
+        isDown = true;
+        showcaseContainer.style.cursor = 'grabbing';
+        startX = e.pageX - showcaseContainer.offsetLeft;
+        scrollLeft = showcaseContainer.scrollLeft;
+    });
+
+    showcaseContainer.addEventListener('mouseleave', () => {
+        isDown = false;
+        showcaseContainer.style.cursor = '';
+    });
+
+    showcaseContainer.addEventListener('mouseup', () => {
+        isDown = false;
+        showcaseContainer.style.cursor = '';
+    });
+
+    showcaseContainer.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - showcaseContainer.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        showcaseContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    // Set grab cursor
+    showcaseContainer.style.cursor = 'grab';
+}
+
+// ============================================
+// CTA SECTION
+// ============================================
+const ctaSection = document.querySelector('.cta-section');
+
+ScrollTrigger.create({
+    trigger: ctaSection,
+    start: 'top 65%',
+    onEnter: () => ctaSection.classList.add('in-view'),
+    once: true,
+});
+
+// ============================================
+// GLOBAL — MARQUEE SPEED SHIFT
+// ============================================
+const marqueeTrack = document.querySelector('.marquee-track');
+let mCurrent = 35, mTarget = 35;
+
 lenis.on('scroll', ({ velocity }) => {
-    const skew = velocity * 0.015;   // was 0.05
-    productImages.forEach(img => {
-        gsap.to(img, {
-            skewY: skew,
-            duration: 0.5,
-            ease: "power2.out",
-            overwrite: true
-        });
+    mTarget = 35 / (1 + Math.abs(velocity) * 0.003);
+});
+
+(function tickMarquee() {
+    mCurrent += (mTarget - mCurrent) * 0.04;
+    if (marqueeTrack) marqueeTrack.style.animationDuration = `${mCurrent}s`;
+    requestAnimationFrame(tickMarquee);
+})();
+
+// ============================================
+// FOOTER REVEAL
+// ============================================
+gsap.from('.footer-content > *', {
+    scrollTrigger: {
+        trigger: '.footer',
+        start: 'top 85%',
+        once: true,
+    },
+    y: 40,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: 'power3.out',
+});
+
+// ============================================
+// MENU TOGGLE
+// ============================================
+const menuBtn = document.querySelector('.menu-btn');
+const menuOverlay = document.getElementById('menu-overlay');
+const menuLinks = document.querySelectorAll('.menu-link');
+let menuOpen = false;
+
+function openMenu() {
+    menuOpen = true;
+    document.body.classList.add('menu-open');
+    menuOverlay.classList.add('open');
+    lenis.stop();
+}
+
+function closeMenu() {
+    menuOpen = false;
+    document.body.classList.remove('menu-open');
+    menuOverlay.classList.remove('open');
+    lenis.start();
+}
+
+menuBtn.addEventListener('click', () => {
+    if (menuOpen) {
+        closeMenu();
+    } else {
+        openMenu();
+    }
+});
+
+// Menu links — scroll to section on click
+menuLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+            closeMenu();
+            // Small delay for menu close animation
+            setTimeout(() => {
+                lenis.scrollTo(targetEl, { offset: 0, duration: 1.5 });
+            }, 400);
+        }
     });
 });
 
-// Preloader simulation
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
+// Close menu on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuOpen) closeMenu();
 });
-
